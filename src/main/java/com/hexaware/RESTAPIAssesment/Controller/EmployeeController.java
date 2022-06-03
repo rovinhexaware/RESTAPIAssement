@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class EmployeeController {
@@ -16,9 +20,13 @@ public class EmployeeController {
     private EmployeeService person;
 
     @GetMapping("/k")
-    public ResponseEntity<Employee> TestAssesment(@Valid @RequestBody Employee person){
+    public ResponseEntity<Object> TestAssesment(@Valid @RequestBody Employee person){
         Employee newEmp = this.person.addEmployee(person);
-        return new ResponseEntity<>(newEmp, HttpStatus.CREATED);
+        Map<String, Object> statusMsg = new HashMap<>();
+        List<String> errors = new ArrayList<>();
+        statusMsg.put("Status", "VALID");
+        statusMsg.put("errors", errors);
+        return new ResponseEntity<>(statusMsg, HttpStatus.CREATED);
     }
 
 }

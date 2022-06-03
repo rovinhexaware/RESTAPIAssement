@@ -19,14 +19,20 @@ public class EmployeeController {
     @Autowired
     private EmployeeService person;
 
-    @GetMapping("/k")
+    @GetMapping("/")
     public ResponseEntity<Object> TestAssesment(@Valid @RequestBody Employee person){
         Employee newEmp = this.person.addEmployee(person);
         Map<String, Object> statusMsg = new HashMap<>();
         List<String> errors = new ArrayList<>();
-        statusMsg.put("Status", "VALID");
+
+        if(newEmp.getEmployeeId() == 0) {
+            statusMsg.put("Status", "ERROR");
+            errors.add("Error creating user");
+        }
+        else statusMsg.put("Status", "VALID");
         statusMsg.put("errors", errors);
         return new ResponseEntity<>(statusMsg, HttpStatus.CREATED);
     }
+
 
 }
